@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Check } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { Check, Star, Zap, Crown, ArrowRight } from 'lucide-react';
 import axios from 'axios';
 import { API_URL, RAZORPAY_KEY, SITE } from '../constants';
+import { AnimatedSection, GlowCard, GradientButton } from './ui/AnimationComponents';
 
 interface PricingPlanProps {
   title: string;
@@ -9,46 +11,111 @@ interface PricingPlanProps {
   features: string[];
   description?: string;
   isPopular?: boolean;
+  icon: React.ComponentType<any>;
   onSelectPlan: (price: string) => void;
 }
 
-const PricingPlan: React.FC<PricingPlanProps> = ({ title, price, features, description, isPopular = false, onSelectPlan }) => {
+const PricingPlan: React.FC<PricingPlanProps> = ({ 
+  title, 
+  price, 
+  features, 
+  description, 
+  isPopular = false, 
+  icon: Icon,
+  onSelectPlan 
+}) => {
   return (
-    <div className={`rounded-xl overflow-hidden ${isPopular
-      ? 'bg-gradient-to-b from-blue-500 to-blue-900 border-0 transform scale-105 shadow-xl'
-      : 'bg-gray-800 border border-gray-700'
-      }`}>
-      <div className="p-8">
-        <div className='mb-4'>
-          <h3 className={`text-2xl font-bold italic text-center  ${isPopular ? 'text-white' : 'text-blue-400'}`}>
+    <motion.div
+      className="relative h-full"
+      initial={{ opacity: 0, y: 50 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6 }}
+      whileHover={{ y: -10 }}
+    >
+      {isPopular && (
+        <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
+          <div className="bg-gradient-to-r from-primary-500 to-secondary-500 text-white px-6 py-2 rounded-full text-sm font-semibold">
+            Most Popular
+          </div>
+        </div>
+      )}
+      
+      <GlowCard className={`relative h-full p-8 ${
+        isPopular 
+          ? 'bg-gradient-to-br from-primary-900/50 to-secondary-900/50 border-primary-500/50' 
+          : 'bg-neutral-800/50 border-neutral-700/50'
+      } backdrop-blur-lg border rounded-2xl transition-all duration-300`}>
+        
+        <div className="text-center mb-8">
+          <div className={`inline-flex items-center justify-center w-16 h-16 rounded-full mb-4 ${
+            isPopular ? 'bg-primary-500/20' : 'bg-neutral-700/50'
+          }`}>
+            <Icon className={`w-8 h-8 ${isPopular ? 'text-primary-400' : 'text-neutral-400'}`} />
+          </div>
+          
+          <h3 className={`text-2xl font-heading font-bold mb-2 ${
+            isPopular ? 'text-white' : 'text-white'
+          }`}>
             {title}
           </h3>
-          {description && <span className="text-white/70 text-sm">{description}</span>}
+          
+          {description && (
+            <p className="text-neutral-400 text-sm mb-4">{description}</p>
+          )}
+          
+          <div className="mb-6">
+            <span className="text-4xl font-bold text-white">₹{price}</span>
+            <span className="text-neutral-400 ml-2">one-time</span>
+          </div>
         </div>
-        <div className={`text-3xl font-bold text-center mb-8 ${isPopular ? 'text-white' : 'text-white'}`}>
-          ₹{price}
-        </div>
-        <ul className="space-y-3">
+
+        <ul className="space-y-4 mb-8">
           {features.map((feature, index) => (
-            <li key={index} className="flex items-center text-start">
-              <Check size={16} className={`mr-2 min-w-4 ${isPopular ? 'text-white' : 'text-green-400'}`} />
-              <span className={isPopular ? 'text-blue-100' : 'text-gray-300'}><strong>{feature.split(' – ')[0]}</strong> {' – '} {feature.split(' – ')[1]}</span>
-            </li>
+            <motion.li 
+              key={index} 
+              className="flex items-start"
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.1 * index }}
+            >
+              <div className={`flex-shrink-0 w-5 h-5 rounded-full flex items-center justify-center mr-3 mt-0.5 ${
+                isPopular ? 'bg-primary-500/20' : 'bg-green-500/20'
+              }`}>
+                <Check className={`w-3 h-3 ${isPopular ? 'text-primary-400' : 'text-green-400'}`} />
+              </div>
+              <span className="text-neutral-300 text-sm leading-relaxed">
+                <strong className="text-white">{feature.split(' – ')[0]}</strong>
+                {feature.includes(' – ') && (
+                  <span className="text-neutral-400"> – {feature.split(' – ')[1]}</span>
+                )}
+              </span>
+            </motion.li>
           ))}
         </ul>
-        <div className="mt-8">
-          <button
-            className={`w-full py-3 rounded-md font-medium transition ${isPopular
-              ? 'bg-white text-blue-600 hover:bg-gray-100'
-              : 'bg-blue-500 text-white hover:bg-blue-600'
-              }`}
-            onClick={() => onSelectPlan(price)} // On click, set selected price
-          >
-            Get Started
-          </button>
+
+        <div className="mt-auto">
+          {isPopular ? (
+            <GradientButton 
+              size="lg" 
+              className="w-full group"
+              onClick={() => onSelectPlan(price)}
+            >
+              Get Started Now
+              <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+            </GradientButton>
+          ) : (
+            <motion.button
+              className="w-full bg-neutral-700/50 hover:bg-neutral-600/50 text-white font-semibold py-4 px-6 rounded-lg border border-neutral-600/50 hover:border-neutral-500/50 transition-all duration-300"
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              onClick={() => onSelectPlan(price)}
+            >
+              Choose Plan
+            </motion.button>
+          )}
         </div>
-      </div>
-    </div>
+      </GlowCard>
+    </motion.div>
   );
 };
 

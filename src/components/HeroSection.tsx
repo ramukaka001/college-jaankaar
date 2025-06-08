@@ -6,9 +6,9 @@ import heroImage from "../assets/hero-girl.png";
 
 export default function HeroSection() {
   const stats = [
-    { icon: Users, number: "10,000+", label: "Students Guided" },
-    { icon: Award, number: "95%", label: "Success Rate" },
-    { icon: TrendingUp, number: "500+", label: "Universities" },
+    { icon: Users, number: "5,000+", label: "Students Guided" },
+    { icon: Award, number: "98%", label: "Success Rate" },
+    { icon: TrendingUp, number: "300+", label: "Universities" },
   ];
 
   return (
@@ -27,7 +27,7 @@ export default function HeroSection() {
             <AnimatedSection animation="slideUp" delay={0.2}>
               <div className="inline-flex items-center px-4 py-2 bg-primary-500/10 border border-primary-500/20 rounded-full text-primary-300 text-sm font-medium backdrop-blur-sm">
                 <Star className="w-4 h-4 mr-2 text-yellow-400" />
-                Trusted by 10,000+ Students Worldwide
+                Trusted by 5,000+ Students Worldwide
               </div>
             </AnimatedSection>
 
@@ -35,16 +35,16 @@ export default function HeroSection() {
               <h1 className="text-5xl md:text-7xl font-heading font-bold text-white leading-tight">
                 Shape Your
                 <span className="block bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent">
-                  Dream Career
+                  Future with
                 </span>
-                Today
+                Expert Guidance
               </h1>
             </AnimatedSection>
 
             <AnimatedSection animation="slideUp" delay={0.6}>
               <p className="text-xl text-neutral-300 leading-relaxed max-w-2xl">
-                Get personalized career counseling, university admission guidance, and expert mentorship 
-                to unlock your potential and achieve your academic dreams.
+                Unlock your potential with personalized counseling and comprehensive support 
+                for your academic and career journey.
               </p>
             </AnimatedSection>
 
@@ -114,7 +114,7 @@ export default function HeroSection() {
                   <Award className="w-4 h-4 text-white" />
                 </div>
                 <div>
-                  <div className="text-white font-semibold text-sm">95% Success</div>
+                  <div className="text-white font-semibold text-sm">98% Success</div>
                   <div className="text-neutral-300 text-xs">Admission Rate</div>
                 </div>
               </div>

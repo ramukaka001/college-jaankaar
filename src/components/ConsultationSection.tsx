@@ -1,6 +1,22 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import { motion } from 'framer-motion';
+import { useInView } from 'react-intersection-observer';
+import { 
+  Calendar, 
+  MessageCircle, 
+  Phone, 
+  Mail, 
+  User, 
+  ArrowRight,
+  CheckCircle,
+  Sparkles,
+  Clock,
+  Award
+} from 'lucide-react';
+import { useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
 import { API_URL } from '../constants';
+import { AnimatedSection, StaggeredAnimation, GlowCard, GradientButton } from './ui/AnimationComponents';
 
 const ConsultationSection: React.FC = () => {
   const [formData, setFormData] = useState({

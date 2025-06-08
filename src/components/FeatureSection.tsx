@@ -6,10 +6,9 @@ import {
   GraduationCap, 
   Search, 
   HandHelping, 
-  Lightbulb, 
+  Target, 
   TrendingUp,
   Sparkles,
-  Target,
   Award
 } from 'lucide-react';
 import { SITE } from '../constants';
@@ -132,72 +131,195 @@ const FeatureCard: React.FC<FeatureCardProps> = ({ icon, title, description, ind
 };
 
 const FeatureSection: React.FC = () => {
+  const [ref, inView] = useInView({
+    threshold: 0.1,
+    triggerOnce: true,
+  });
+
   const features = [
     {
       id: 1,
-      icon: <GraduationCap size={24} className="text-white" />,
+      icon: <GraduationCap size={28} className="text-white drop-shadow-lg" />,
       title: 'Expert Guidance that Matters',
-      description: 'Tap into the wisdom of top mentors and industry veterans. We don’t just advise — we empower you with clarity and confidence.',
+      description: 'Tap into the wisdom of top mentors and industry veterans. We don\'t just advise — we empower you with clarity and confidence.',
     },
     {
       id: 2,
-      icon: <Users size={24} className="text-white" />,
-      title: 'Mentorship That’s Made for You',
-      description: 'Every student is unique. That’s why our mentors walk with you, step by step, turning confusion into clarity and dreams into action plans.',
+      icon: <Users size={28} className="text-white drop-shadow-lg" />,
+      title: 'Mentorship Made for You',
+      description: 'Every student is unique. Our mentors walk with you step by step, turning confusion into clarity and dreams into action plans.',
     },
     {
       id: 3,
-      icon: <Search size={24} className="text-white" />,
+      icon: <Search size={28} className="text-white drop-shadow-lg" />,
       title: 'Tailored Consultation',
       description: 'Course? Country? Career path? We decode every option and help you make choices that align with your future, not just your present.',
     },
     {
       id: 4,
-      icon: <HandHelping size={24} className="text-white" />, // Keep HandHelping for Admission Support
+      icon: <HandHelping size={28} className="text-white drop-shadow-lg" />,
       title: 'Admission Support',
       description: 'From form-filling to follow-ups, we handle the stress so you can focus on success. Your dream college is now just a process away.',
     },
     {
       id: 5,
-      icon: <Lightbulb size={24} className="text-white" />, // Keep Lightbulb for New Opportunity
-      title: 'New Opportunity',
-      description: 'Lorem ipsum dolor sit amet consectetur. Donec quis.',
+      icon: <Target size={28} className="text-white drop-shadow-lg" />,
+      title: 'Strategic Planning',
+      description: 'Every goal needs a roadmap. We create personalized strategies that transform your aspirations into achievable milestones.',
     },
     {
       id: 6,
-      icon: <TrendingUp size={24} className="text-white" />,
-      title: 'Career Acceleration, Not Just Admission', // Keep BarChart2 or consider TrendingUp
+      icon: <TrendingUp size={28} className="text-white drop-shadow-lg" />,
+      title: 'Career Acceleration',
       description: 'We go beyond the classroom. With skill-building insights and future-proof strategies, we prepare you to thrive in a changing world.',
     },
   ];
 
+  const stats = [
+    { number: '10K+', label: 'Students Guided' },
+    { number: '95%', label: 'Success Rate' },
+    { number: '500+', label: 'Universities' },
+    { number: '50+', label: 'Countries' },
+  ];
+
   return (
-    <div className="bg-gray-900 py-20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 className="text-4xl md:text-5xl font-bold text-white text-center ">
-          Your Dream. Our Mission.
-        </h2>
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-blue-500 mb-4">
-            Why Thousands Trust {SITE.name} {SITE.sub}
-          </h2>
-          <p className="text-lg text-gray-300 max-w-2xl mx-auto">
-            At {SITE.name} {SITE.sub}, we’re not just an admission provider — we’re your academic allies, your
-            career compass, and your go-to growth partners. Whether you’re chasing a top university
-            seat or exploring future career paths, we make the journey smoother, smarter, and
-            successful.</p>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+    <div className="relative min-h-screen bg-gradient-to-br from-gray-900 via-primary-900/20 to-gray-900 overflow-hidden">
+      {/* Animated background elements */}
+      <div className="absolute inset-0">
+        <motion.div
+          className="absolute top-20 left-10 w-64 h-64 bg-primary-500/10 rounded-full blur-3xl"
+          animate={{ 
+            x: [0, 100, 0],
+            y: [0, -50, 0],
+            scale: [1, 1.2, 1]
+          }}
+          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+        />
+        <motion.div
+          className="absolute bottom-20 right-10 w-96 h-96 bg-secondary-500/10 rounded-full blur-3xl"
+          animate={{ 
+            x: [0, -80, 0],
+            y: [0, 30, 0],
+            scale: [1.2, 1, 1.2]
+          }}
+          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+        />
+      </div>
+
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+        {/* Header Section */}
+        <AnimatedSection>
+          <div className="text-center mb-20">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              className="mb-6"
+            >
+              <span className="inline-flex items-center px-4 py-2 rounded-full bg-gradient-to-r from-primary-500/20 to-secondary-500/20 border border-primary-500/30 text-primary-300 text-sm font-medium mb-4">
+                <Award className="w-4 h-4 mr-2" />
+                Trusted by Thousands
+              </span>
+            </motion.div>
+
+            <motion.h2 
+              className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-white via-primary-200 to-secondary-200 bg-clip-text text-transparent"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+            >
+              Your Dream.
+              <br />
+              <span className="bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent">
+                Our Mission.
+              </span>
+            </motion.h2>
+
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+              className="mb-8"
+            >
+              <h3 className="text-2xl md:text-3xl font-semibold text-primary-300 mb-4">
+                Why Thousands Trust {SITE.name} {SITE.sub}
+              </h3>
+              <p className="text-lg text-gray-300 max-w-3xl mx-auto leading-relaxed">
+                At {SITE.name} {SITE.sub}, we\'re not just an admission provider — we\'re your academic allies, your
+                career compass, and your go-to growth partners. Whether you're chasing a top university
+                seat or exploring future career paths, we make the journey smoother, smarter, and successful.
+              </p>
+            </motion.div>
+
+            {/* Stats Section */}
+            <motion.div
+              ref={ref}
+              className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-16"
+              initial={{ opacity: 0, y: 30 }}
+              animate={inView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.8, delay: 0.6 }}
+            >
+              {stats.map((stat, index) => (
+                <motion.div
+                  key={index}
+                  className="text-center"
+                  whileHover={{ scale: 1.05 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <div className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent mb-2">
+                    {stat.number}
+                  </div>
+                  <div className="text-gray-400 text-sm uppercase tracking-wider">
+                    {stat.label}
+                  </div>
+                </motion.div>
+              ))}
+            </motion.div>
+          </div>
+        </AnimatedSection>
+
+        {/* Features Grid */}
+        <StaggeredAnimation className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {features.map((feature, index) => (
             <FeatureCard
-              index={index}
               key={feature.id}
               icon={feature.icon}
               title={feature.title}
               description={feature.description}
+              index={index}
             />
           ))}
-        </div>
+        </StaggeredAnimation>
+
+        {/* Call to Action */}
+        <motion.div
+          className="text-center mt-20"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.8 }}
+        >
+          <motion.button
+            className="group relative px-8 py-4 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-full text-white font-semibold text-lg shadow-2xl overflow-hidden"
+            whileHover={{ scale: 1.05, boxShadow: "0 20px 40px rgba(59, 130, 246, 0.3)" }}
+            whileTap={{ scale: 0.95 }}
+            transition={{ duration: 0.2 }}
+          >
+            <motion.div
+              className="absolute inset-0 bg-gradient-to-r from-secondary-500 to-primary-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+            />
+            <span className="relative z-10 flex items-center justify-center">
+              Start Your Journey Today
+              <motion.div
+                className="ml-2"
+                animate={{ x: [0, 5, 0] }}
+                transition={{ duration: 1.5, repeat: Infinity }}
+              >
+                <Sparkles size={20} />
+              </motion.div>
+            </span>
+          </motion.button>
+        </motion.div>
       </div>
     </div>
   );
