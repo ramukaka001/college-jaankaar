@@ -99,11 +99,11 @@ const Footer: React.FC = () => {
                 </div>
                 <div className="flex items-center text-gray-400 hover:text-accent-500 transition-colors">
                   <Phone size={16} className="mr-3" />
-                  <span className="text-sm">+91 98765 43210</span>
+                  <span className="text-sm">+91 8209441638</span>
                 </div>
                 <div className="flex items-center text-gray-400 hover:text-accent-500 transition-colors">
-                  <MapPin size={16} className="mr-3" />
-                  <span className="text-sm">Mumbai, India</span>
+                  <MapPin size={16} className="mr-3 min-w-4" />
+                  <span className="text-sm">Metro Station, 101, near Versova, Versova, Andheri West, Mumbai, Maharashtra 400061</span>
                 </div>
               </div>
             </AnimatedSection>

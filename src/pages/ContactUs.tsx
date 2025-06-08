@@ -55,9 +55,9 @@ const ContactUs: React.FC = () => {
       title: 'Visit Our Office',
       description: 'Come meet our team in person',
       details: [
-        'Flat NO-2, Ground Floor',
-        'Lakeside Residency Rukmani Colony',
-        'Arecavenny Mandal Road, Udoor'
+        'Metro Station, 101, near Versova,',
+        'Versova, Andheri West, ',
+        'Mumbai, Maharashtra 400061'
       ],
       color: 'from-blue-500 to-cyan-500'
     },
@@ -66,8 +66,8 @@ const ContactUs: React.FC = () => {
       title: 'Call Us',
       description: 'Speak directly with our counselors',
       details: [
-        '+91 98765 43210',
-        '+91 87654 32109',
+        '+91  8209441638',
+        // '+91 87654 32109',
         'Mon-Sat: 9:00 AM - 8:00 PM'
       ],
       color: 'from-green-500 to-emerald-500'
@@ -421,7 +421,7 @@ const ContactUs: React.FC = () => {
                         <Star key={i} className="w-5 h-5 text-yellow-400" fill="currentColor" />
                       ))}
                     </div>
-                    <span className="text-accent-300 font-semibold">Trusted by 10,000+ Students</span>
+                    <span className="text-accent-300 font-semibold">Trusted by 20,000+ Students</span>
                   </div>
                   <p className="text-gray-300 italic">
                     "The counseling team helped me find the perfect university match. Their guidance was invaluable in shaping my career path."

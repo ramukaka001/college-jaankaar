@@ -20,6 +20,7 @@ import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
 import BlogSection from './components/BlogSection';
 import CtaSection from './components/CtaSection';
+import WhatsAppButton from './components/WhatsAppButton';
 
 function App() {
   return (
@@ -54,6 +55,7 @@ function App() {
           </Routes>
         </main>
         <Footer />
+        <WhatsAppButton />
       </div>
     </Router>
   );
