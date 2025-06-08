@@ -1,68 +1,140 @@
 import React, { useState } from 'react';
-import { MoreHorizontal, Play } from 'lucide-react';
-import axios from 'axios';
-import { API_URL } from '../constants';
+import { MoreHorizontal, Play, Calendar, User, Star, Upload, Plus, Filter, Search, BookOpen, Video, TrendingUp, Loader2 } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useBlogPosts } from '../hooks/useAppwrite';
+import { AnimatedSection, GlowCard } from '../components/ui/AnimationComponents';
 
 interface BlogPostProps {
+  id: string;
+  title: string;
+  excerpt: string;
+  content?: string;
   image: string;
   author: string;
-  date?: string;
-  rating?: number;
+  publishedAt: string;
+  category: string;
+  tags?: string[];
+  readTime?: number;
+  likes?: number;
   isVideo?: boolean;
+  videoUrl?: string;
 }
 
-const BlogPost: React.FC<BlogPostProps> = ({ image, author, date, rating, isVideo }) => (
-  <div className="bg-gray-800 rounded-lg overflow-hidden group hover:shadow-lg transition">
-    <div className="relative h-48">
-      <img src={image} alt={author} className="w-full h-full object-cover" />
-      {isVideo && (
-        <div className="absolute inset-0 flex items-center justify-center">
-          <button className="bg-red-600 rounded-full p-2 hover:bg-red-700 transition">
-            <Play className="w-6 h-6 text-white" />
-          </button>
+const BlogPost: React.FC<{ post: BlogPostProps; index: number }> = ({ post, index }) => (
+  <motion.div
+    initial={{ opacity: 0, y: 20 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.6, delay: index * 0.1 }}
+    className="group"
+  >
+    <GlowCard className="h-full overflow-hidden bg-white/5 backdrop-blur-md border border-white/10">
+      <div className="relative h-56 overflow-hidden">
+        <motion.img 
+          src={post.image} 
+          alt={post.title} 
+          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+        />
+        
+        {/* Overlay gradient */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+        
+        {/* Video play button */}
+        {post.isVideo && (
+          <motion.div 
+            className="absolute inset-0 flex items-center justify-center"
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <div className="bg-white/20 backdrop-blur-md rounded-full p-4 border border-white/30 hover:bg-white/30 transition-all duration-300">
+              <Play className="w-8 h-8 text-white" fill="currentColor" />
+            </div>
+          </motion.div>
+        )}
+        
+        {/* Action buttons */}
+        <div className="absolute top-4 right-4 flex space-x-2">
+          <motion.button
+            whileHover={{ scale: 1.1, rotate: 180 }}
+            className="bg-white/20 backdrop-blur-md p-2 rounded-full border border-white/30 hover:bg-white/30 transition-all duration-300"
+          >
+            <MoreHorizontal size={16} className="text-white" />
+          </motion.button>
         </div>
-      )}
-      <div className="absolute top-2 right-2 space-x-1">
-        <button className="bg-white bg-opacity-20 p-1 rounded hover:bg-opacity-30 transition">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4 text-white">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M7.5 3.75H6A2.25 2.25 0 003.75 6v1.5M16.5 3.75H18A2.25 2.25 0 0120.25 6v1.5m0 9V18A2.25 2.25 0 0118 20.25h-1.5m-9 0H6A2.25 2.25 0 013.75 18v-1.5M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-          </svg>
-        </button>
-        <button className="bg-white bg-opacity-20 p-1 rounded hover:bg-opacity-30 transition">
-          <MoreHorizontal size={16} className="text-white" />
-        </button>
+        
+        {/* Category badge */}
+        <div className="absolute top-4 left-4">
+          <span className="bg-blue-500/80 backdrop-blur-md px-3 py-1 rounded-full text-xs font-medium text-white border border-blue-400/30">
+            {post.category}
+          </span>
+        </div>
+        
+        {/* Date */}
+        <div className="absolute bottom-4 left-4 flex items-center text-white text-sm">
+          <Calendar className="w-4 h-4 mr-2" />
+          {new Date(post.publishedAt).toLocaleDateString()}
+        </div>
       </div>
-      {date && (
-        <div className="absolute bottom-2 left-2 bg-gray-900 bg-opacity-60 px-2 py-1 rounded text-xs text-white">
-          {date}
+      
+      <div className="p-6">
+        <div className="flex items-center mb-3">
+          <div className="w-8 h-8 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 mr-3 flex items-center justify-center">
+            <User className="w-4 h-4 text-white" />
+          </div>
+          <span className="text-white/90 text-sm font-medium">{post.author}</span>
+          {post.readTime && (
+            <span className="ml-auto text-white/60 text-xs flex items-center">
+              <BookOpen className="w-3 h-3 mr-1" />
+              {post.readTime} min read
+            </span>
+          )}
         </div>
-      )}
-    </div>
-    <div className="p-4 bg-gradient-to-b from-blue-600 to-blue-800">
-      <div className="flex items-center mb-2">
-        <div className="w-7 h-7 rounded-full bg-indigo-100 mr-2 overflow-hidden">
-          <img src={image} alt={author} className="w-full h-full object-cover" />
-        </div>
-        <span className="text-sm text-white">{author}</span>
-        {rating && (
-          <div className="ml-auto flex items-center text-yellow-400">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4">
-              <path fillRule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clipRule="evenodd" />
-            </svg>
-            <span className="text-xs ml-1">{rating}</span>
+        
+        <h3 className="text-xl font-bold text-white mb-2 line-clamp-2 group-hover:text-blue-300 transition-colors">
+          {post.title}
+        </h3>
+        
+        <p className="text-white/70 text-sm mb-4 line-clamp-3">
+          {post.excerpt}
+        </p>
+        
+        {post.tags && (
+          <div className="flex flex-wrap gap-2 mb-4">
+            {post.tags.slice(0, 3).map((tag, tagIndex) => (
+              <span
+                key={tagIndex}
+                className="bg-white/10 px-2 py-1 rounded-full text-xs text-white/80 border border-white/20"
+              >
+                #{tag}
+              </span>
+            ))}
           </div>
         )}
+        
+        <div className="flex items-center justify-between">
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white px-6 py-2 rounded-full text-sm font-medium transition-all duration-300 shadow-lg hover:shadow-blue-500/25"
+          >
+            {post.isVideo ? 'Watch Now' : 'Read More'}
+          </motion.button>
+          
+          {post.likes && (
+            <div className="flex items-center text-white/60 text-sm">
+              <Star className="w-4 h-4 mr-1 text-yellow-400" />
+              {post.likes}
+            </div>
+          )}
+        </div>
       </div>
-      <button className="w-full bg-blue-500 hover:bg-blue-600 text-white text-sm py-2 px-4 rounded transition">
-        {isVideo ? 'Watch Now' : 'Read More'}
-      </button>
-    </div>
-  </div>
+    </GlowCard>
+  </motion.div>
 );
 
 const Blog: React.FC = () => {
-  const [activeCategory, setActiveCategory] = useState('Latest');
-  const [showForm, setShowForm] = useState(false);
+  const [activeCategory, setActiveCategory] = useState('All');
+  const [showUploadForm, setShowUploadForm] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
@@ -72,202 +144,340 @@ const Blog: React.FC = () => {
     video: null as File | null,
   });
 
-  const categories = ['Latest', 'Health', 'Nutri', 'Tech', 'Lifestyle'];
+  const { posts: blogPosts, loading: postsLoading } = useBlogPosts();
+  const categories = ['All', 'Career', 'Education', 'Technology', 'Health', 'Lifestyle'];
 
-  const blogPosts = [
-    {
-      image: 'https://images.pexels.com/photos/3769021/pexels-photo-3769021.jpeg',
-      author: 'Radhika Rao',
-      rating: 4.7,
-      isVideo: true,
-    },
-    {
-      image: 'https://images.pexels.com/photos/3769021/pexels-photo-3769021.jpeg',
-      author: 'Radhika Rao',
-      rating: 4.7,
-      isVideo: true,
-    },
-    {
-      image: 'https://images.pexels.com/photos/1681010/pexels-photo-1681010.jpeg',
-      author: 'Daily Post Fintech',
-      date: '28 Nov 2024',
-    },
-    {
-      image: 'https://images.pexels.com/photos/1681010/pexels-photo-1681010.jpeg',
-      author: 'Daily Post Fintech',
-      date: '28 Nov 2024',
-    },
-  ];
-
-  const allPosts = [...blogPosts, ...blogPosts, ...blogPosts];
-
-
+  // Filter posts based on category and search
+  const filteredPosts = blogPosts.filter(post => {
+    const matchesCategory = activeCategory === 'All' || post.category === activeCategory;
+    const matchesSearch = searchQuery === '' || 
+      post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      post.excerpt.toLowerCase().includes(searchQuery.toLowerCase());
+    return matchesCategory && matchesSearch;
+  });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-
-    const form = new FormData();
-    form.append('name', formData.name);
-    form.append('date', formData.date);
-    form.append('title', formData.title);
-    form.append('category', formData.category);
-    if (formData.video) {
-      form.append('video', formData.video);
-    }
-
-    try {
-      const response = await axios.post(`${API_URL}/blog/uploadBlog`, form, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
-
-      if (response.data.success) {
-        alert('Blog uploaded successfully!');
-        setShowForm(false); // Close the form after successful submission
-      } else {
-        alert('Error uploading blog');
-      }
-    } catch (error) {
-      console.error('Upload failed:', error);
-      alert('Error uploading blog');
-    } finally {
+    
+    // Simulate API call
+    setTimeout(() => {
+      alert('Blog uploaded successfully!');
+      setShowUploadForm(false);
+      setFormData({ name: '', date: '', title: '', category: '', video: null });
       setLoading(false);
-    }
+    }, 2000);
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0] || null;
+    setFormData(prev => ({ ...prev, video: file }));
   };
 
   return (
-    <div className="min-h-screen bg-gray-900">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900/20 to-purple-900/20">
       {/* Hero Section */}
-      <div className="relative h-[400px]">
-        <img
-          src="https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg"
-          alt="Blog hero"
-          className="w-full h-full object-cover"
-        />
-        <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center text-center">
-          <div>
-            <h1 className="text-5xl font-bold text-white mb-4">BLOG</h1>
-            <p className="text-gray-200 max-w-2xl mx-auto">
-              Lorem ipsum dolor sit amet consectetur. Enim fermentum rhoncus augue tellus ipsum commodo. Tristique vulputate dui viverra eu lorem turpis. Diam velit arcu magna eu. Vel viverra nibh diam auctor adipiscing dui eget.
-            </p>
-          </div>
+      <AnimatedSection className="relative min-h-[60vh] flex items-center justify-center overflow-hidden">
+        {/* Background */}
+        <div className="absolute inset-0">
+          <div className="absolute inset-0 bg-gradient-to-r from-blue-900/90 via-purple-900/90 to-pink-900/90" />
+          <motion.div 
+            className="absolute inset-0 opacity-20"
+            animate={{ 
+              backgroundPosition: ['0% 0%', '100% 100%'],
+            }}
+            transition={{ 
+              duration: 20,
+              repeat: Infinity,
+              repeatType: 'reverse'
+            }}
+            style={{
+              backgroundImage: 'radial-gradient(circle at 25% 25%, rgba(59, 130, 246, 0.3) 0%, transparent 50%), radial-gradient(circle at 75% 75%, rgba(147, 51, 234, 0.3) 0%, transparent 50%)',
+              backgroundSize: '200% 200%'
+            }}
+          />
         </div>
-      </div>
 
-      {showForm && (
-        <div className="fixed inset-0 bg-black bg-opacity-60 z-50 flex items-center justify-center">
-          <div className="bg-white p-6 rounded-lg w-full max-w-md">
-            <h3 className="text-xl font-semibold mb-4 text-center">Upload Blog/Video</h3>
-            <form
-              onSubmit={handleSubmit} 
-              className="space-y-4"
-            >
-              <input
-                type="text"
-                name="name"
-                placeholder="Author Name"
-                value={formData.name}
-                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                className="w-full border border-gray-300 px-3 py-2 rounded"
-                required
-              />
-              <input
-                type="date"
-                name="date"
-                value={formData.date}
-                onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-                className="w-full border border-gray-300 px-3 py-2 rounded"
-                required
-              />
-              <input
-                type="text"
-                name="title"
-                placeholder="Post Title"
-                value={formData.title}
-                onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                className="w-full border border-gray-300 px-3 py-2 rounded"
-                required
-              />
-              <input
-                type="text"
-                name="category"
-                placeholder="Category"
-                value={formData.category}
-                onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                className="w-full border border-gray-300 px-3 py-2 rounded"
-                required
-              />
-              <input
-                type="file"
-                name="video"
-                accept="video/*"
-                onChange={(e) => setFormData({ ...formData, video: e.target.files?.[0] || null })}
-                className="w-full"
-                required
-              />
-              <div className="flex justify-end space-x-2 pt-2">
-                <button
-                  type="button"
-                  className="px-4 py-2 bg-gray-300 rounded"
-                  onClick={() => setShowForm(false)}
-                >
-                  Cancel
-                </button>
-                <button type="submit" className="px-4 py-2 bg-blue-500 text-white rounded" disabled={loading}>
-                {loading ? 'Uploading...' : 'Submit'}
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
-
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <h2 className="text-3xl font-bold text-white text-center">Latest Update</h2>
-        <p className="text-gray-400 text-center mt-4 mb-8">
-          Lorem ipsum dolor sit amet consectetur. Cursus sit magna elementum nunc. Hendrerit dolor vel neque eros elit at volutpat ultricies quis. Et aliquet nec in tellus magna. Leo tellus amet eros cursus.
-        </p>
-
-     
-        <div className="flex justify-center space-x-4 mb-12">
-          {categories.map((category) => (
-            <button
-              key={category}
-              className={`px-4 py-2 rounded-full ${activeCategory === category
-                  ? 'bg-blue-500 text-white'
-                  : 'text-gray-400 hover:text-white'
-                }`}
-              onClick={() => setActiveCategory(category)}
-            >
-              {category}
-            </button>
-          ))}
-        </div>
-        <div className="text-center mt-6">
-          <button
-            className="bg-green-500 hover:bg-green-600 text-white py-3 px-8 rounded-md transition"
-            onClick={() => setShowForm(true)}
+        <div className="relative z-10 text-center max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
           >
-            Upload
-          </button>
+            <motion.div
+              className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 rounded-full px-6 py-3 mb-8"
+              whileHover={{ scale: 1.05 }}
+            >
+              <TrendingUp className="w-5 h-5 text-blue-400" />
+              <span className="text-white/90 font-medium">Latest Insights & Updates</span>
+            </motion.div>
+            
+            <h1 className="text-5xl md:text-7xl font-bold text-white mb-6">
+              <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+                BLOG
+              </span>
+            </h1>
+            
+            <p className="text-xl text-white/80 max-w-3xl mx-auto leading-relaxed">
+              Discover expert insights, career guidance, and educational content to help you navigate your academic and professional journey with confidence.
+            </p>
+          </motion.div>
         </div>
 
+        {/* Floating elements */}
+        <motion.div
+          className="absolute top-20 left-20 w-20 h-20 bg-blue-500/20 rounded-full blur-xl"
+          animate={{
+            y: [0, -20, 0],
+            x: [0, 10, 0],
+          }}
+          transition={{
+            duration: 6,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+        />
+        <motion.div
+          className="absolute bottom-20 right-20 w-32 h-32 bg-purple-500/20 rounded-full blur-xl"
+          animate={{
+            y: [0, 20, 0],
+            x: [0, -15, 0],
+          }}
+          transition={{
+            duration: 8,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+        />
+      </AnimatedSection>
 
-    
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {allPosts.map((post, index) => (
-            <BlogPost key={index} {...post} />
-          ))}
-        </div>
+      {/* Upload Form Modal */}
+      <AnimatePresence>
+        {showUploadForm && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-8 w-full max-w-md"
+            >
+              <div className="flex items-center justify-between mb-6">
+                <h3 className="text-2xl font-bold text-white">Upload Content</h3>
+                <motion.button
+                  whileHover={{ scale: 1.1, rotate: 90 }}
+                  whileTap={{ scale: 0.9 }}
+                  onClick={() => setShowUploadForm(false)}
+                  className="text-white/60 hover:text-white"
+                >
+                  <Plus className="w-6 h-6 rotate-45" />
+                </motion.button>
+              </div>
 
-        <div className="text-center mt-12">
-          <button className="bg-blue-500 hover:bg-blue-600 text-white py-3 px-8 rounded-md transition">
-            See More
-          </button>
-        </div>
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <input
+                  type="text"
+                  name="name"
+                  placeholder="Author Name"
+                  value={formData.name}
+                  onChange={handleInputChange}
+                  className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-white/60 focus:outline-none focus:border-blue-400 transition-colors"
+                  required
+                />
+                <input
+                  type="date"
+                  name="date"
+                  value={formData.date}
+                  onChange={handleInputChange}
+                  className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-blue-400 transition-colors"
+                  required
+                />
+                <input
+                  type="text"
+                  name="title"
+                  placeholder="Post Title"
+                  value={formData.title}
+                  onChange={handleInputChange}
+                  className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-white/60 focus:outline-none focus:border-blue-400 transition-colors"
+                  required
+                />
+                <select
+                  name="category"
+                  value={formData.category}
+                  onChange={handleInputChange}
+                  className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-blue-400 transition-colors"
+                  required
+                >
+                  <option value="">Select Category</option>
+                  {categories.slice(1).map(cat => (
+                    <option key={cat} value={cat} className="bg-gray-800">{cat}</option>
+                  ))}
+                </select>
+                <input
+                  type="file"
+                  name="video"
+                  accept="video/*,image/*"
+                  onChange={handleFileChange}
+                  className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-500 file:text-white hover:file:bg-blue-600"
+                  required
+                />
+                <div className="flex gap-3 pt-4">
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    type="button"
+                    onClick={() => setShowUploadForm(false)}
+                    className="flex-1 bg-white/10 border border-white/20 text-white py-3 rounded-xl font-medium hover:bg-white/20 transition-colors"
+                  >
+                    Cancel
+                  </motion.button>
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    type="submit"
+                    disabled={loading}
+                    className="flex-1 bg-gradient-to-r from-blue-500 to-purple-500 text-white py-3 rounded-xl font-medium hover:from-blue-600 hover:to-purple-600 transition-all disabled:opacity-50"
+                  >
+                    {loading ? <Loader2 className='animate-spin'/> 
+                    : 'Upload'}
+                  </motion.button>
+                </div>
+              </form>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Main Content */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        {/* Header Section */}
+        <AnimatedSection>
+          <div className="text-center mb-12">
+            <motion.h2 
+              className="text-4xl font-bold text-white mb-4"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+            >
+              Latest Updates & Insights
+            </motion.h2>
+            <motion.p 
+              className="text-white/70 max-w-2xl mx-auto text-lg"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+            >
+              Stay informed with our curated collection of expert articles, career guidance, and educational insights.
+            </motion.p>
+          </div>
+        </AnimatedSection>
+
+        {/* Search and Upload Section */}
+        <AnimatedSection>
+          <div className="flex flex-col md:flex-row gap-4 mb-12">
+            {/* Search Bar */}
+            <div className="flex-1 relative">
+              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-white/60" />
+              <input
+                type="text"
+                placeholder="Search articles..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl pl-12 pr-4 py-4 text-white placeholder-white/60 focus:outline-none focus:border-blue-400 transition-colors"
+              />
+            </div>
+            
+            {/* Upload Button */}
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => setShowUploadForm(true)}
+              className="bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 text-white px-8 py-4 rounded-2xl font-semibold flex items-center gap-2 transition-all shadow-lg hover:shadow-green-500/25"
+            >
+              <Upload className="w-5 h-5" />
+              Upload Content
+            </motion.button>
+          </div>
+        </AnimatedSection>
+
+        {/* Categories Filter */}
+        <AnimatedSection>
+          <div className="flex flex-wrap justify-center gap-3 mb-12">
+            {categories.map((category, index) => (
+              <motion.button
+                key={category}
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.3, delay: index * 0.1 }}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => setActiveCategory(category)}
+                className={`px-6 py-3 rounded-full font-medium transition-all ${
+                  activeCategory === category
+                    ? 'bg-gradient-to-r from-blue-500 to-purple-500 text-white shadow-lg shadow-blue-500/25'
+                    : 'bg-white/10 backdrop-blur-md border border-white/20 text-white/80 hover:bg-white/20 hover:text-white'
+                }`}
+              >
+                {category}
+              </motion.button>
+            ))}
+          </div>
+        </AnimatedSection>
+
+        {/* Blog Posts Grid */}
+        <AnimatedSection>
+          {postsLoading ? (
+            <div className="flex justify-center py-20">
+              <Loader2 className='animate-spin'/>
+            </div>
+          ) : (
+            <>
+              <motion.div 
+                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.6 }}
+              >
+                {filteredPosts.map((post, index) => (
+                  <BlogPost key={post.$id} post={post as any} index={index} />
+                ))}
+              </motion.div>
+
+              {filteredPosts.length === 0 && (
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="text-center py-20"
+                >
+                  <div className="text-6xl mb-4">📝</div>
+                  <h3 className="text-2xl font-bold text-white mb-2">No posts found</h3>
+                  <p className="text-white/60">Try adjusting your search or category filter.</p>
+                </motion.div>
+              )}
+
+              {filteredPosts.length > 0 && (
+                <div className="text-center mt-12">
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white px-8 py-4 rounded-2xl font-semibold transition-all shadow-lg hover:shadow-blue-500/25"
+                  >
+                    Load More Articles
+                  </motion.button>
+                </div>
+              )}
+            </>
+          )}
+        </AnimatedSection>
       </div>
     </div>
   );
