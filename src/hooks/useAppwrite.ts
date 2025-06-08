@@ -349,7 +349,7 @@ export const useFAQs = () => {
         ]);
         setFaqs(response.documents as unknown as FAQ[]);
       } catch (err) {
-        setError(err as Error);
+        // setError(err as Error);
         // Fallback data
         setFaqs([
           {

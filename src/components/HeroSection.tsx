@@ -5,7 +5,7 @@ import heroImage from "../assets/hero-girl.png";
 
 export default function HeroSection() {
   const stats = [
-    { icon: Users, number: "15,000+", label: "Students Guided" },
+    { icon: Users, number: "20,000+", label: "Students Guided" },
     { icon: Award, number: "99.99%", label: "Success Rate" },
     { icon: TrendingUp, number: "500+", label: "Universities" },
   ];

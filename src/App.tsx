@@ -10,7 +10,7 @@ import TestimonialSection from './components/TestimonialSection';
 import PricingSection from './components/PricingSection';
 import FeatureSection from './components/FeatureSection';
 import FaqSection from './components/FaqSection';
-import CtaSection from './components/CtaSection';
+// import CtaSection from './components/CtaSection';
 import Footer from './components/Footer';
 import CareerCounselling from './pages/CareerCounselling';
 import AdmissionAssistant from './pages/AdmissionAssistant';
@@ -35,11 +35,8 @@ function App() {
                 <PricingSection />
                 <TestimonialSection />
                 <UniversitySection />
-                {/* <CareerPathSection /> */}
-                {/* <CategorySection /> */}
                 <ConsultationSection />
                 <FaqSection />
-                {/* <CtaSection /> */}
               </>
             } />
             <Route path="/career-counselling" element={<CareerCounselling />} />
