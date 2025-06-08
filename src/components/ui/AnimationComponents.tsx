@@ -240,16 +240,18 @@ export const ParallaxScroll: React.FC<ParallaxScrollProps> = ({
 
 export const GradientButton: React.FC<{
   children: React.ReactNode;
-  onClick?: () => void;
+  onClick?: () => void | Promise<void>;
   className?: string;
   variant?: 'primary' | 'secondary' | 'accent';
   size?: 'sm' | 'md' | 'lg';
+  disabled?: boolean;
 }> = ({
   children,
   onClick,
   className = '',
   variant = 'primary',
-  size = 'md'
+  size = 'md',
+  disabled = false
 }) => {
   const variants = {
     primary: 'bg-gradient-to-r from-primary-500 to-secondary-500 hover:from-primary-600 hover:to-secondary-600',
@@ -270,12 +272,14 @@ export const GradientButton: React.FC<{
         ${variants[variant]}
         ${sizes[size]}
         ${className}
+        flex items-center justify-center
         text-white font-semibold rounded-lg shadow-lg
         transform transition-all duration-300 ease-in-out
         hover:shadow-xl hover:scale-105
         active:scale-95
-        focus:outline-none focus:ring-4 focus:ring-primary-300/50
+        focus:outline-none focus:ring-4 focus:ring-primary-300/50,
       `}
+      disabled={disabled}
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
     >

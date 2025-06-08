@@ -25,22 +25,21 @@ import SignUp from './pages/SignUp';
 function App() {
   return (
     <Router>
-      <div className="min-h-screen bg-gray-900">
+      <div className="min-h-screen bg-gradient-to-br from-neutral-900 via-neutral-800 to-neutral-900">
         <Navbar />
         <main>
           <Routes>
             <Route path="/" element={
               <>
                 <HeroSection />
-                <VideoSection />
-                <CategorySection />
-                {/* <ConsultationSection /> */}
-                <UniversitySection />
-                <TestimonialSection />
-                <CareerPathSection />
-                <PricingSection />
                 <FeatureSection />
-                {/* <BlogSection /> */}
+                <VideoSection />
+                <PricingSection />
+                <TestimonialSection />
+                <UniversitySection />
+                <CareerPathSection />
+                <CategorySection />
+                <ConsultationSection />
                 <FaqSection />
                 <CtaSection />
               </>
