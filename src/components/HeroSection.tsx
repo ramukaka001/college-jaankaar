@@ -51,10 +51,12 @@ export default function HeroSection() {
 
             <AnimatedSection animation="slideUp" delay={0.8}>
               <div className="flex flex-col sm:flex-row gap-4">
-                <GradientButton size="lg" className="group">
-                  Start Your Journey
-                  <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
-                </GradientButton>
+                <a href="#pricing" >
+                  <GradientButton size="lg" className="group">
+                    Start Your Journey
+                    <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+                  </GradientButton>
+                </a>
 
                 {/* <motion.button
                   className="flex items-center justify-center px-8 py-4 text-white border border-white/20 rounded-lg hover:bg-white/10 transition-all duration-300 backdrop-blur-sm"
@@ -90,7 +92,7 @@ export default function HeroSection() {
           </div>
 
           {/* Right Content - Hero Image */}
-          <div className="relative">
+          <div className="relative hidden lg:block">
             <AnimatedSection animation="slideRight" delay={0.8}>
               <FloatingElement intensity={15} speed={8}>
                 <div className="relative">
