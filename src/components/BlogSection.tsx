@@ -1,132 +1,318 @@
-import React from 'react';
-import { MoreHorizontal } from 'lucide-react';
+import React, { useState } from 'react';
+import { motion } from 'framer-motion';
+import {
+  Calendar,
+  User,
+  ArrowRight,
+  Clock,
+  BookOpen,
+  Heart,
+  Share2,
+  Tag,
+  Play,
+  TrendingUp
+} from 'lucide-react';
+import { AnimatedSection, GlowCard, FloatingElement } from './ui/AnimationComponents';
+import { useBlogPosts } from '../hooks/useAppwrite';
 
 interface BlogPostCardProps {
-  image: string;
-  date: string;
-  title: string;
-  author: string;
-  isVideo?: boolean;
+  post: {
+    $id: string;
+    title: string;
+    excerpt: string;
+    author: string;
+    publishDate: string;
+    category: string;
+    image?: string;
+    readTime?: number;
+    isVideo?: boolean;
+    views?: number;
+    likes?: number;
+  };
+  index: number;
 }
 
-const BlogPostCard: React.FC<BlogPostCardProps> = ({ image, date, title, author, isVideo = false }) => {
+const BlogPostCard: React.FC<BlogPostCardProps> = ({ post, index }) => {
+  const [isLiked, setIsLiked] = useState(false);
+  const [likes, setLikes] = useState(post.likes || Math.floor(Math.random() * 50) + 10);
+
+  const handleLike = () => {
+    setIsLiked(!isLiked);
+    setLikes(prev => isLiked ? prev - 1 : prev + 1);
+  };
+
+  const defaultImage = "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80";
+
   return (
-    <div className="bg-gray-800 rounded-lg overflow-hidden group hover:shadow-lg transition">
-      <div className="relative h-48">
-        <img src={image} alt={title} className="w-full h-full object-cover" />
-        {isVideo && (
-          <div className="absolute inset-0 flex items-center justify-center">
-            <button className="bg-red-600 rounded-full p-2 hover:bg-red-700 transition">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6 text-white">
-                <path fillRule="evenodd" d="M4.5 5.653c0-1.426 1.529-2.33 2.779-1.643l11.54 6.348c1.295.712 1.295 2.573 0 3.285L7.28 19.991c-1.25.687-2.779-.217-2.779-1.643V5.653z" clipRule="evenodd" />
-              </svg>
-            </button>
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6, delay: index * 0.1 }}
+      className="group"
+    >
+      <GlowCard className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl overflow-hidden hover:bg-white/10 transition-all duration-500">
+        {/* Image Section */}
+        <div className="relative h-48 overflow-hidden">
+          <img
+            src={post.image || defaultImage}
+            alt={post.title}
+            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+          />
+
+          {/* Overlay */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+
+          {/* Category Badge */}
+          <div className="absolute top-4 left-4">
+            <span className="inline-flex items-center px-3 py-1 bg-gradient-to-r from-accent-500 to-primary-500 text-white text-xs font-semibold rounded-full">
+              <Tag size={12} className="mr-1" />
+              {post.category}
+            </span>
           </div>
-        )}
-        <div className="absolute top-2 right-2 space-x-1">
-          <button className="bg-white bg-opacity-20 p-1 rounded hover:bg-opacity-30 transition">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4 text-white">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M7.5 3.75H6A2.25 2.25 0 003.75 6v1.5M16.5 3.75H18A2.25 2.25 0 0120.25 6v1.5m0 9V18A2.25 2.25 0 0118 20.25h-1.5m-9 0H6A2.25 2.25 0 013.75 18v-1.5M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-            </svg>
-          </button>
-          <button className="bg-white bg-opacity-20 p-1 rounded hover:bg-opacity-30 transition">
-            <MoreHorizontal size={16} className="text-white" />
-          </button>
+
+          {/* Video Play Button */}
+          {post.isVideo && (
+            <motion.div
+              className="absolute inset-0 flex items-center justify-center"
+              whileHover={{ scale: 1.1 }}
+            >
+              <div className="bg-white/20 backdrop-blur-lg rounded-full p-3 border border-white/30">
+                <Play className="w-6 h-6 text-white" fill="white" />
+              </div>
+            </motion.div>
+          )}
+
+          {/* Action Buttons */}
+          <div className="absolute top-4 right-4 flex space-x-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <motion.button
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              onClick={handleLike}
+              className={`p-2 rounded-full backdrop-blur-sm border border-white/20 transition-all ${isLiked ? 'bg-red-500 text-white' : 'bg-white/10 text-white hover:bg-white/20'
+                }`}
+            >
+              <Heart size={16} fill={isLiked ? 'currentColor' : 'none'} />
+            </motion.button>
+            <motion.button
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              className="p-2 bg-white/10 backdrop-blur-sm rounded-full border border-white/20 text-white hover:bg-white/20 transition-all"
+            >
+              <Share2 size={16} />
+            </motion.button>
+          </div>
+
+          {/* Stats */}
+          <div className="absolute bottom-4 left-4 flex items-center space-x-4 text-white text-xs">
+            {post.views && (
+              <div className="flex items-center">
+                <TrendingUp size={12} className="mr-1" />
+                {post.views}
+              </div>
+            )}
+            <div className="flex items-center">
+              <Heart size={12} className="mr-1" />
+              {likes}
+            </div>
+          </div>
         </div>
-        {date && (
-          <div className="absolute bottom-2 left-2 bg-gray-900 bg-opacity-60 px-2 py-1 rounded text-xs text-white">
-            {date}
+
+        {/* Content Section */}
+        <div className="p-6">
+          {/* Metadata */}
+          <div className="flex items-center justify-between text-sm text-gray-400 mb-4">
+            <div className="flex items-center space-x-4">
+              <div className="flex items-center">
+                <User size={14} className="mr-1" />
+                <span>{post.author}</span>
+              </div>
+              <div className="flex items-center">
+                <Calendar size={14} className="mr-1" />
+                <span>{new Date(post.publishDate).toLocaleDateString()}</span>
+              </div>
+            </div>
+            {post.readTime && (
+              <div className="flex items-center text-accent-400">
+                <Clock size={14} className="mr-1" />
+                <span>{post.readTime} min</span>
+              </div>
+            )}
           </div>
-        )}
-      </div>
-      <div className="p-4 bg-gradient-to-b from-blue-600 to-blue-800">
-        <div className="flex items-center mb-2">
-          <div className="w-7 h-7 rounded-full bg-indigo-100 mr-2 overflow-hidden">
-            <img 
-              src="https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg" 
-              alt={author} 
-              className="w-full h-full object-cover"
-            />
-          </div>
-          <span className="text-sm text-white">{author}</span>
-          <div className="ml-auto flex items-center text-yellow-400">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4">
-              <path fillRule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clipRule="evenodd" />
-            </svg>
-            <span className="text-xs ml-1">4.7</span>
-          </div>
+
+          {/* Title */}
+          <h3 className="text-xl font-bold text-white mb-3 line-clamp-2 group-hover:text-accent-400 transition-colors">
+            {post.title}
+          </h3>
+
+          {/* Excerpt */}
+          <p className="text-gray-400 text-sm leading-relaxed mb-6 line-clamp-3">
+            {post.excerpt}
+          </p>
+
+          {/* Read More Button */}
+          <motion.button
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            className="flex items-center justify-between w-full bg-gradient-to-r from-accent-500/10 to-primary-500/10 hover:from-accent-500/20 hover:to-primary-500/20 border border-accent-500/20 text-accent-400 px-4 py-3 rounded-lg transition-all duration-300 group/btn"
+          >
+            <span className="font-medium">
+              {post.isVideo ? 'Watch Now' : 'Read Article'}
+            </span>
+            <ArrowRight size={16} className="transform group-hover/btn:translate-x-1 transition-transform" />
+          </motion.button>
         </div>
-        <button className="w-full bg-blue-500 hover:bg-blue-600 text-white text-sm py-2 px-4 rounded transition">
-          {isVideo ? 'Watch Now' : 'Read More'}
-        </button>
-      </div>
-    </div>
+      </GlowCard>
+    </motion.div>
   );
 };
 
 const BlogSection: React.FC = () => {
-  const blogPosts = [
-    {
-      id: 1,
-      image: 'https://images.pexels.com/photos/3769021/pexels-photo-3769021.jpeg',
-      date: '',
-      title: 'Career Guidance Tips',
-      author: 'Radhika Rao',
-      isVideo: true,
-    },
-    {
-      id: 2,
-      image: 'https://images.pexels.com/photos/3769021/pexels-photo-3769021.jpeg',
-      date: '',
-      title: 'How to Choose Your Major',
-      author: 'Radhika Rao',
-      isVideo: true,
-    },
-    {
-      id: 3,
-      image: 'https://images.pexels.com/photos/1681010/pexels-photo-1681010.jpeg',
-      date: '28 Nov 2024',
-      title: 'Daily Post Fintech - Trial PXL',
-      author: '',
-      isVideo: false,
-    },
-    {
-      id: 4,
-      image: 'https://images.pexels.com/photos/1681010/pexels-photo-1681010.jpeg',
-      date: '28 Nov 2024',
-      title: 'Daily Post Fintech - Trial PXL',
-      author: '',
-      isVideo: false,
-    },
-  ];
+  const { posts, loading, error } = useBlogPosts();
+  const [filter, setFilter] = useState('all');
+
+  const categories = ['all', 'career-guidance', 'university-tips', 'success-stories', 'admissions'];
+
+  const filteredPosts = filter === 'all'
+    ? posts
+    : posts.filter((post: any) => post.category === filter);
 
   return (
-    <div className="bg-gray-900 py-16">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 className="text-3xl md:text-4xl font-bold text-white text-center italic mb-12">
-          Our Blog
-        </h2>
-        
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {blogPosts.map((post) => (
-            <BlogPostCard 
-              key={post.id}
-              image={post.image}
-              date={post.date}
-              title={post.title}
-              author={post.author}
-              isVideo={post.isVideo}
-            />
-          ))}
-        </div>
-        
-        <div className="flex justify-center mt-10">
-          <button className="bg-blue-500 hover:bg-blue-600 text-white py-3 px-10 rounded-md transition">
-            See More
-          </button>
-        </div>
+    <section className="relative bg-gradient-to-b from-gray-950 via-black to-gray-950 py-20 overflow-hidden">
+      {/* Background Elements */}
+      <div className="absolute inset-0">
+        <div className="absolute top-20 left-20 w-72 h-72 bg-accent-500/5 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute bottom-20 right-20 w-96 h-96 bg-primary-500/5 rounded-full blur-3xl animate-pulse delay-1000" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(6,182,212,0.03)_0%,transparent_70%)]" />
       </div>
-    </div>
+
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Header */}
+        <div className="text-center mb-16">
+          <AnimatedSection animation="slideUp" delay={0.1}>
+            <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-accent-500 to-primary-500 rounded-full mb-6">
+              <BookOpen size={32} className="text-white" />
+            </div>
+          </AnimatedSection>
+
+          <AnimatedSection animation="slideUp" delay={0.2}>
+            <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
+              Latest from Our{' '}
+              <span className="bg-gradient-to-r from-accent-500 to-primary-500 bg-clip-text text-transparent">
+                Blog
+              </span>
+            </h2>
+          </AnimatedSection>
+
+          <AnimatedSection animation="slideUp" delay={0.3}>
+            <p className="text-xl text-gray-400 max-w-3xl mx-auto">
+              Stay updated with the latest insights, tips, and success stories
+              to help you navigate your educational journey.
+            </p>
+          </AnimatedSection>
+        </div>
+
+        {/* Category Filter */}
+        <AnimatedSection animation="slideUp" delay={0.4}>
+          <div className="flex flex-wrap justify-center gap-4 mb-12">
+            {categories.map((category) => (
+              <motion.button
+                key={category}
+                onClick={() => setFilter(category)}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className={`px-6 py-3 rounded-xl font-medium transition-all duration-300 ${filter === category
+                    ? 'bg-gradient-to-r from-accent-500 to-primary-500 text-white shadow-lg'
+                    : 'bg-white/5 border border-white/10 text-gray-400 hover:text-white hover:bg-white/10'
+                  }`}
+              >
+                {category.charAt(0).toUpperCase() + category.slice(1).replace('-', ' ')}
+              </motion.button>
+            ))}
+          </div>
+        </AnimatedSection>
+
+        {/* Content */}
+        {loading ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+            {[...Array(8)].map((_, index) => (
+              <div key={index} className="animate-pulse">
+                <div className="bg-gray-800/60 rounded-xl h-80" />
+              </div>
+            ))}
+          </div>
+        ) : error ? (
+          <div className="text-center py-12">
+            <BookOpen size={48} className="text-gray-400 mx-auto mb-4" />
+            <p className="text-red-400 mb-4">Failed to load blog posts</p>
+            <button
+              onClick={() => window.location.reload()}
+              className="text-accent-500 hover:text-primary-500 transition-colors"
+            >
+              Try Again
+            </button>
+          </div>
+        ) : (
+          <>
+            {/* Blog Posts Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 mb-12">
+              {filteredPosts.slice(0, 8).map((post: any, index: number) => (
+                <BlogPostCard key={post.$id} post={post} index={index} />
+              ))}
+            </div>
+
+            {/* Load More Button */}
+            {filteredPosts.length > 8 && (
+              <AnimatedSection animation="slideUp" delay={0.6}>
+                <div className="text-center">
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="bg-gradient-to-r from-accent-500 to-primary-500 hover:from-primary-500 hover:to-accent-500 text-white font-semibold py-4 px-8 rounded-xl shadow-lg hover:shadow-accent-500/25 transition-all duration-300"
+                  >
+                    <div className="flex items-center">
+                      <BookOpen size={20} className="mr-2" />
+                      Load More Articles
+                    </div>
+                  </motion.button>
+                </div>
+              </AnimatedSection>
+            )}
+          </>
+        )}
+
+        {/* Newsletter CTA */}
+        <AnimatedSection animation="slideUp" delay={0.8}>
+          <div className="mt-20">
+            <GlowCard className="bg-gradient-to-r from-accent-500/10 to-primary-500/10 border border-white/10 rounded-2xl p-8 text-center">
+              <FloatingElement intensity={2} speed={3}>
+                <BookOpen size={48} className="text-accent-500 mx-auto mb-4" />
+              </FloatingElement>
+              <h3 className="text-2xl font-bold text-white mb-4">
+                Never Miss an Update
+              </h3>
+              <p className="text-gray-400 mb-8 max-w-md mx-auto">
+                Subscribe to our newsletter and get the latest career guidance,
+                university tips, and success stories delivered to your inbox.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
+                <input
+                  type="email"
+                  placeholder="Enter your email"
+                  className="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-transparent transition-all backdrop-blur-sm"
+                />
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="bg-gradient-to-r from-accent-500 to-primary-500 hover:from-primary-500 hover:to-accent-500 text-white font-semibold px-6 py-3 rounded-xl transition-all duration-300"
+                >
+                  Subscribe
+                </motion.button>
+              </div>
+            </GlowCard>
+          </div>
+        </AnimatedSection>
+      </div>
+    </section>
   );
 };
 

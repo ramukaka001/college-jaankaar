@@ -136,7 +136,7 @@ export const useBlogPosts = (limit = 6) => {
         ]);
         setPosts(response.documents as unknown as BlogPost[]);
       } catch (err) {
-        setError(err as Error);
+        // setError(err as Error);
         // Fallback data
         setPosts([
           {

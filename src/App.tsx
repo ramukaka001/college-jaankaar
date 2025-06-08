@@ -2,15 +2,14 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import HeroSection from './components/HeroSection';
 import VideoSection from './components/VideoSection';
-// import CategorySection from './components/CategorySection';
+import CategorySection from './components/CategorySection';
 import ConsultationSection from './components/ConsultationSection';
-// import CareerPathSection from './components/CareerPathSection';
+import CareerPathSection from './components/CareerPathSection';
 import UniversitySection from './components/UniversitySection';
 import TestimonialSection from './components/TestimonialSection';
 import PricingSection from './components/PricingSection';
 import FeatureSection from './components/FeatureSection';
 import FaqSection from './components/FaqSection';
-// import CtaSection from './components/CtaSection';
 import Footer from './components/Footer';
 import CareerCounselling from './pages/CareerCounselling';
 import AdmissionAssistant from './pages/AdmissionAssistant';
@@ -19,6 +18,7 @@ import AboutUs from './pages/AboutUs';
 import ContactUs from './pages/ContactUs';
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
+import BlogSection from './components/BlogSection';
 
 function App() {
   return (
@@ -34,6 +34,8 @@ function App() {
                 <VideoSection />
                 <PricingSection />
                 <TestimonialSection />
+                <CategorySection />
+                <BlogSection  />
                 <UniversitySection />
                 <ConsultationSection />
                 <FaqSection />
