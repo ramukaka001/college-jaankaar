@@ -293,7 +293,7 @@ export const useCareerPaths = () => {
         ]);
         setCareerPaths(response.documents as unknown as CareerPath[]);
       } catch (err) {
-        setError(err as Error);
+        // setError(err as Error);
         // Fallback data
         setCareerPaths([
           {

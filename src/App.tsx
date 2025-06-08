@@ -19,6 +19,7 @@ import ContactUs from './pages/ContactUs';
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
 import BlogSection from './components/BlogSection';
+import CtaSection from './components/CtaSection';
 
 function App() {
   return (
@@ -35,10 +36,12 @@ function App() {
                 <PricingSection />
                 <TestimonialSection />
                 <CategorySection />
-                <BlogSection  />
+                <CareerPathSection />
+                <BlogSection />
                 <UniversitySection />
                 <ConsultationSection />
                 <FaqSection />
+                <CtaSection />
               </>
             } />
             <Route path="/career-counselling" element={<CareerCounselling />} />
