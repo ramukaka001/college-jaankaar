@@ -2,14 +2,15 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Play, Users, Star, Award } from 'lucide-react';
 import { AnimatedSection, GlowCard, FloatingElement } from './ui/AnimationComponents';
+import theImage from '../assets/two-people-speech-bubbles.png';
 
 const VideoSection: React.FC = () => {
   const [isPlaying, setIsPlaying] = useState(false);
 
   const stats = [
-    { icon: Users, value: "5000+", label: "Students Guided" },
+    { icon: Users, value: "20,000+", label: "Students Guided" },
     { icon: Star, value: "4.9/5", label: "Rating" },
-    { icon: Award, value: "98%", label: "Success Rate" },
+    { icon: Award, value: "99.99%", label: "Success Rate" },
   ];
 
   return (
@@ -30,7 +31,7 @@ const VideoSection: React.FC = () => {
               </span>
             </h2>
             <p className="text-xl text-neutral-300 max-w-3xl mx-auto">
-              Watch real success stories and discover how our expert guidance 
+              Watch real success stories and discover how our expert guidance
               has helped thousands of students achieve their dreams.
             </p>
           </div>
@@ -42,14 +43,14 @@ const VideoSection: React.FC = () => {
             <GlowCard className="relative rounded-2xl overflow-hidden group">
               <div className="aspect-video relative">
                 <img
-                  src="https://images.pexels.com/photos/7516347/pexels-photo-7516347.jpeg"
+                  src={theImage}
                   alt="Success stories video"
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                 />
-                
+
                 {/* Video Overlay */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-                
+
                 {/* Play Button */}
                 <motion.button
                   className="absolute inset-0 flex items-center justify-center group/play"
@@ -93,15 +94,15 @@ const VideoSection: React.FC = () => {
                   <Star className="w-4 h-4 mr-2 text-yellow-400" />
                   Success Stories
                 </div>
-                
+
                 <h3 className="text-3xl md:text-4xl font-heading font-bold text-white">
                   Real Results from
                   <span className="block text-primary-400">Real Students</span>
                 </h3>
-                
+
                 <p className="text-lg text-neutral-300 leading-relaxed">
-                  Our proven methodology has helped thousands of students navigate their 
-                  academic journey with confidence. From career clarity to university 
+                  Our proven methodology has helped thousands of students navigate their
+                  academic journey with confidence. From career clarity to university
                   admission success, see how we make dreams reality.
                 </p>
               </div>

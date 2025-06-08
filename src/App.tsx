@@ -10,7 +10,6 @@ import UniversitySection from './components/UniversitySection';
 import TestimonialSection from './components/TestimonialSection';
 import PricingSection from './components/PricingSection';
 import FeatureSection from './components/FeatureSection';
-import BlogSection from './components/BlogSection';
 import FaqSection from './components/FaqSection';
 import CtaSection from './components/CtaSection';
 import Footer from './components/Footer';
@@ -37,8 +36,8 @@ function App() {
                 <PricingSection />
                 <TestimonialSection />
                 <UniversitySection />
-                <CareerPathSection />
-                <CategorySection />
+                {/* <CareerPathSection /> */}
+                {/* <CategorySection /> */}
                 <ConsultationSection />
                 <FaqSection />
                 <CtaSection />

@@ -14,7 +14,7 @@ import {
 } from 'lucide-react';
 import { SITE } from '../constants';
 import { useTestimonials } from '../hooks/useAppwrite';
-import { AnimatedSection, StaggeredAnimation, GlowCard, CounterAnimation } from './ui/AnimationComponents';
+import { AnimatedSection, GlowCard, CounterAnimation } from './ui/AnimationComponents';
 
 interface StarRatingProps {
   rating: number;

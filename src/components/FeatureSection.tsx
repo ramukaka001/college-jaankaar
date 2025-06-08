@@ -45,7 +45,7 @@ const FeatureCard: React.FC<FeatureCardProps> = ({ icon, title, description, ind
     >
       <GlowCard className="h-full transform-gpu">
         <motion.div
-          className="relative overflow-hidden"
+          className="relative overflow-hidden pt-6"
           whileHover={{ scale: 1.02 }}
           transition={{ duration: 0.3 }}
         >
@@ -176,10 +176,10 @@ const FeatureSection: React.FC = () => {
   ];
 
   const stats = [
-    { number: '10K+', label: 'Students Guided' },
-    { number: '95%', label: 'Success Rate' },
+    { number: '20K+', label: 'Students Guided' },
+    { number: '99.99%', label: 'Success Rate' },
     { number: '500+', label: 'Universities' },
-    { number: '50+', label: 'Countries' },
+    { number: '100%', label: 'Career Counselling' },
   ];
 
   return (

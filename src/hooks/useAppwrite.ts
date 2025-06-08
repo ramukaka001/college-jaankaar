@@ -67,7 +67,7 @@ export const useTestimonials = () => {
             role: 'University Student',
             content: 'The career counseling service helped me choose the perfect major and university. The guidance was invaluable!',
             rating: 5,
-            image: '/api/placeholder/60/60'
+            image: 'https://api.dicebear.com/9.x/avataaars/svg?seed=SarahJohnson'
           },
           {
             $id: '2',
@@ -75,7 +75,7 @@ export const useTestimonials = () => {
             role: 'High School Graduate',
             content: 'Thanks to their admission assistance, I got into my dream university. Highly recommended!',
             rating: 5,
-            image: '/api/placeholder/60/60'
+            image: 'https://api.dicebear.com/9.x/avataaars/svg?seed=MichaelChen'
           },
           {
             $id: '3',
@@ -83,7 +83,7 @@ export const useTestimonials = () => {
             role: 'Career Changer',
             content: 'The personalized counseling sessions helped me pivot my career successfully. Amazing support!',
             rating: 5,
-            image: '/api/placeholder/60/60'
+            image: 'https://api.dicebear.com/9.x/avataaars/svg?seed=EmilyRodriguez'
           }
         ]);
       } finally {

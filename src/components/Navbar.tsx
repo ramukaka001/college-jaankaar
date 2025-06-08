@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X, ChevronDown, User, LogOut } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { SITE } from '../constants';
@@ -7,7 +7,6 @@ import { SITE } from '../constants';
 const Navbar: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const location = useLocation();
 
   useEffect(() => {
@@ -92,18 +91,18 @@ const Navbar: React.FC = () => {
 
           {/* Desktop Auth Buttons */}
           <div className="hidden lg:flex items-center space-x-4">
-            <Link
+            {/* <Link
               to="/signin"
               className="text-neutral-300 hover:text-white font-medium transition-colors duration-300"
             >
               Sign In
-            </Link>
+            </Link> */}
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
               <Link
-                to="/signup"
+                to="/contact"
                 className="bg-gradient-to-r from-primary-500 to-secondary-500 hover:from-primary-600 hover:to-secondary-600 text-white px-6 py-2.5 rounded-full font-semibold transition-all duration-300 shadow-lg hover:shadow-xl"
               >
-                Get Started
+                Contact Us
               </Link>
             </motion.div>
           </div>
@@ -181,19 +180,19 @@ const Navbar: React.FC = () => {
                     transition={{ delay: 0.6 }}
                     className="pt-4 border-t border-white/10 space-y-3"
                   >
-                    <Link
+                    {/* <Link
                       to="/signin"
                       onClick={toggleMenu}
                       className="block text-center py-3 text-neutral-300 hover:text-white font-medium transition-colors duration-300"
                     >
                       Sign In
-                    </Link>
+                    </Link> */}
                     <Link
-                      to="/signup"
+                      to="/contact"
                       onClick={toggleMenu}
                       className="block text-center bg-gradient-to-r from-primary-500 to-secondary-500 hover:from-primary-600 hover:to-secondary-600 text-white py-3 rounded-lg font-semibold transition-all duration-300"
                     >
-                      Get Started
+                      Contact Us
                     </Link>
                   </motion.div>
                 </div>
