@@ -361,7 +361,7 @@ const TestimonialSection: React.FC = () => {
                 </div>
                 <p className="text-sm text-gray-400">Average Rating</p>
               </div>
-              <div className="text-center">
+              {/* <div className="text-center">
                 <div className="text-2xl font-bold text-primary-400 mb-1">
                   <CounterAnimation from={0} to={testimonials.length} />+
                 </div>
@@ -369,8 +369,8 @@ const TestimonialSection: React.FC = () => {
               </div>
               <div className="text-center">
                 <div className="text-2xl font-bold text-secondary-400 mb-1">98%</div>
-                <p className="text-sm text-gray-400">Success Rate</p>
-              </div>
+                <p className="text-sm text-gray-400">Success Rate</p> */}
+              {/* </div> */}
             </motion.div>
           </div>
         </AnimatedSection>

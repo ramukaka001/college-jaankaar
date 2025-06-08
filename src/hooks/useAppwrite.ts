@@ -26,6 +26,11 @@ interface University {
   logo: string;
   ranking: string;
   description: string;
+  location?: string;
+  established?: string;
+  students?: string;
+  programs?: string;
+  website?: string;
 }
 
 interface CareerPath {
@@ -42,6 +47,25 @@ interface FAQ {
   $id: string;
   question: string;
   answer: string;
+}
+
+interface ConsultationRequest {
+  name: string;
+  email: string;
+  mobile: string;
+  message: string;
+  preferredTime?: string;
+  consultationType?: string;
+}
+
+interface ConsultationService {
+  $id: string;
+  title: string;
+  description: string;
+  duration: string;
+  price: string;
+  features: string[];
+  isPopular?: boolean;
 }
 
 export const useTestimonials = () => {
@@ -168,36 +192,80 @@ export const useUniversities = () => {
         ]);
         setUniversities(response.documents as unknown as University[]);
       } catch (err) {
-        setError(err as Error);
+        // setError(err as Error);
         // Fallback data
         setUniversities([
           {
             $id: '1',
             name: 'Harvard University',
-            logo: '/api/placeholder/120/60',
-            ranking: '#1 in USA',
-            description: 'Prestigious Ivy League university'
+            logo: 'https://images.pexels.com/photos/1454360/pexels-photo-1454360.jpeg',
+            ranking: '4.9',
+            description: 'Prestigious Ivy League university',
+            location: 'Cambridge, Massachusetts',
+            established: '1636',
+            students: '23,000+',
+            programs: '100+',
+            website: 'https://www.harvard.edu'
           },
           {
             $id: '2',
             name: 'Stanford University',
-            logo: '/api/placeholder/120/60',
-            ranking: '#2 in USA',
-            description: 'Leading research university'
+            logo: 'https://images.pexels.com/photos/207692/pexels-photo-207692.jpeg',
+            ranking: '4.8',
+            description: 'Leading research university',
+            location: 'Stanford, California',
+            established: '1885',
+            students: '17,000+',
+            programs: '90+',
+            website: 'https://www.stanford.edu'
           },
           {
             $id: '3',
             name: 'MIT',
-            logo: '/api/placeholder/120/60',
-            ranking: '#3 in USA',
-            description: 'Top technology institute'
+            logo: 'https://images.pexels.com/photos/1170412/pexels-photo-1170412.jpeg',
+            ranking: '4.7',
+            description: 'Top technology institute',
+            location: 'Cambridge, Massachusetts',
+            established: '1861',
+            students: '11,000+',
+            programs: '50+',
+            website: 'https://web.mit.edu'
           },
           {
             $id: '4',
             name: 'Oxford University',
-            logo: '/api/placeholder/120/60',
-            ranking: '#1 in UK',
-            description: 'Historic academic excellence'
+            logo: 'https://images.pexels.com/photos/159490/yale-university-landscape-universities-schools-159490.jpeg',
+            ranking: '4.9',
+            description: 'Historic academic excellence',
+            location: 'Oxford, England',
+            established: '1096',
+            students: '24,000+',
+            programs: '300+',
+            website: 'https://www.ox.ac.uk'
+          },
+          {
+            $id: '5',
+            name: 'IIT Bombay',
+            logo: 'https://images.pexels.com/photos/5428833/pexels-photo-5428833.jpeg',
+            ranking: '4.6',
+            description: 'Premier engineering institute',
+            location: 'Mumbai, Maharashtra',
+            established: '1958',
+            students: '10,000+',
+            programs: '60+',
+            website: 'https://www.iitb.ac.in'
+          },
+          {
+            $id: '6',
+            name: 'University of Delhi',
+            logo: 'https://images.pexels.com/photos/1595391/pexels-photo-1595391.jpeg',
+            ranking: '4.4',
+            description: 'Leading public university in India',
+            location: 'New Delhi, India',
+            established: '1922',
+            students: '300,000+',
+            programs: '500+',
+            website: 'https://www.du.ac.in'
           }
         ]);
       } finally {
@@ -314,4 +382,78 @@ export const useFAQs = () => {
   }, []);
 
   return { faqs, loading, error };
+};
+
+export const useConsultationServices = () => {
+  const [services, setServices] = useState<ConsultationService[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<Error | null>(null);
+
+  useEffect(() => {
+    const fetchServices = async () => {
+      try {
+        const response = await getDocuments(COLLECTIONS.CONSULTATION_SERVICES, [
+          commonQueries.published,
+          commonQueries.orderByDate
+        ]);
+        setServices(response.documents as unknown as ConsultationService[]);
+      } catch (err) {
+        setError(err as Error);
+        // Fallback data
+        setServices([
+          {
+            $id: '1',
+            title: 'Career Discovery Session',
+            description: 'Explore your interests, strengths, and career possibilities with personalized assessments.',
+            duration: '60 minutes',
+            price: '₹2,999',
+            features: ['Personality Assessment', 'Interest Analysis', 'Career Mapping', 'Action Plan'],
+            isPopular: false
+          },
+          {
+            $id: '2',
+            title: 'University Admission Guidance',
+            description: 'Complete assistance for university applications, essays, and interview preparation.',
+            duration: '3 sessions',
+            price: '₹9,999',
+            features: ['University Selection', 'Application Review', 'Essay Writing', 'Interview Prep', 'Scholarship Guidance'],
+            isPopular: true
+          },
+          {
+            $id: '3',
+            title: 'Complete Career Counseling',
+            description: 'Comprehensive 6-session program covering all aspects of career planning and development.',
+            duration: '6 sessions',
+            price: '₹19,999',
+            features: ['Career Assessment', 'University Guidance', 'Skill Development', 'Resume Building', 'Interview Training', 'Follow-up Support'],
+            isPopular: false
+          }
+        ]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchServices();
+  }, []);
+
+  return { services, loading, error };
+};
+
+export const submitConsultationRequest = async (data: ConsultationRequest): Promise<boolean> => {
+  try {
+    // In a real implementation, you would create a document in Appwrite
+    // For now, we'll simulate the submission
+    console.log('Consultation request submitted:', data);
+    
+    // Simulate API delay
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    
+    // For demonstration, we'll always return success
+    // In real implementation: await createDocument(COLLECTIONS.CONSULTATION_REQUESTS, data);
+    return true;
+  } catch (error) {
+    console.error('Error submitting consultation request:', error);
+    return false;
+  }
 };

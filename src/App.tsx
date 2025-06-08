@@ -1,11 +1,10 @@
-import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import HeroSection from './components/HeroSection';
 import VideoSection from './components/VideoSection';
-import CategorySection from './components/CategorySection';
+// import CategorySection from './components/CategorySection';
 import ConsultationSection from './components/ConsultationSection';
-import CareerPathSection from './components/CareerPathSection';
+// import CareerPathSection from './components/CareerPathSection';
 import UniversitySection from './components/UniversitySection';
 import TestimonialSection from './components/TestimonialSection';
 import PricingSection from './components/PricingSection';
@@ -40,7 +39,7 @@ function App() {
                 {/* <CategorySection /> */}
                 <ConsultationSection />
                 <FaqSection />
-                <CtaSection />
+                {/* <CtaSection /> */}
               </>
             } />
             <Route path="/career-counselling" element={<CareerCounselling />} />

@@ -26,6 +26,7 @@ export const COLLECTIONS = {
   PRICING_PLANS: 'pricing-plans',
   CONTACT_FORMS: 'contact-forms',
   CONSULTATIONS: 'consultations',
+  CONSULTATION_SERVICES: 'consultation-services',
   USERS: 'users',
   CATEGORIES: 'categories'
 };
