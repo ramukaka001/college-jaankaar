@@ -117,7 +117,7 @@ export default function HeroSection() {
                   <Award className="w-4 h-4 text-white" />
                 </div>
                 <div>
-                  <div className="text-white font-semibold text-sm">98% Success</div>
+                  <div className="text-white font-semibold text-sm">99.99% Success</div>
                   <div className="text-neutral-300 text-xs">Admission Rate</div>
                 </div>
               </div>
