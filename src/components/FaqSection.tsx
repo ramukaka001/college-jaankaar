@@ -28,11 +28,10 @@ const FaqItem: React.FC<FaqItemProps> = ({ question, answer, isOpen, onClick, in
         whileTap={{ scale: 0.99 }}
       >
         <div className="flex items-center flex-1">
-          <div className={`w-10 h-10 rounded-full flex items-center justify-center mr-4 transition-all duration-300 ${
-            isOpen 
-              ? 'bg-gradient-to-r from-accent-500 to-primary-500' 
+          <div className={`w-10 h-10 rounded-full flex items-center justify-center mr-4 transition-all duration-300 ${isOpen
+              ? 'bg-gradient-to-r from-accent-500 to-primary-500'
               : 'bg-white/10 border border-white/20'
-          }`}>
+            }`}>
             <motion.div
               animate={{ rotate: isOpen ? 180 : 0 }}
               transition={{ duration: 0.3 }}
@@ -47,7 +46,7 @@ const FaqItem: React.FC<FaqItemProps> = ({ question, answer, isOpen, onClick, in
           <span className="text-white font-semibold text-lg">{question}</span>
         </div>
       </motion.button>
-      
+
       <AnimatePresence>
         {isOpen && (
           <motion.div
@@ -98,7 +97,7 @@ const FaqSection: React.FC = () => {
               <HelpCircle size={32} className="text-white" />
             </div>
           </AnimatedSection>
-          
+
           <AnimatedSection animation="slideUp" delay={0.2}>
             <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
               Frequently Asked{' '}
@@ -107,10 +106,10 @@ const FaqSection: React.FC = () => {
               </span>
             </h2>
           </AnimatedSection>
-          
+
           <AnimatedSection animation="slideUp" delay={0.3}>
             <p className="text-xl text-gray-400 max-w-3xl mx-auto mb-8">
-              Find answers to common questions about our counseling services, 
+              Find answers to common questions about our counseling services,
               university admissions, and career guidance programs.
             </p>
           </AnimatedSection>
@@ -143,8 +142,8 @@ const FaqSection: React.FC = () => {
           <div className="text-center py-12">
             <MessageCircle size={48} className="text-gray-400 mx-auto mb-4" />
             <p className="text-red-400 mb-4">Failed to load FAQs</p>
-            <button 
-              onClick={() => window.location.reload()} 
+            <button
+              onClick={() => window.location.reload()}
               className="text-accent-500 hover:text-primary-500 transition-colors"
             >
               Try Again
@@ -171,7 +170,7 @@ const FaqSection: React.FC = () => {
         )}
 
         {/* Contact CTA */}
-        <AnimatedSection animation="slideUp" delay={0.6}>
+        {/* <AnimatedSection animation="slideUp" delay={0.6}>
           <div className="text-center mt-16">
             <GlowCard className="inline-block">
               <div className="p-8">
@@ -192,7 +191,7 @@ const FaqSection: React.FC = () => {
               </div>
             </GlowCard>
           </div>
-        </AnimatedSection>
+        </AnimatedSection> */}
       </div>
     </section>
   );

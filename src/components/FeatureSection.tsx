@@ -252,7 +252,7 @@ const FeatureSection: React.FC = () => {
             </motion.div>
 
             {/* Stats Section */}
-            <motion.div
+            {/* <motion.div
               ref={ref}
               className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-16"
               initial={{ opacity: 0, y: 30 }}
@@ -274,7 +274,7 @@ const FeatureSection: React.FC = () => {
                   </div>
                 </motion.div>
               ))}
-            </motion.div>
+            </motion.div> */}
           </div>
         </AnimatedSection>
 

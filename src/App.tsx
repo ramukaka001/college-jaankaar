@@ -33,16 +33,16 @@ function App() {
               <>
                 <HeroSection />
                 <FeatureSection />
-                <VideoSection />
                 <PricingSection />
+                {/* <VideoSection /> */}
                 <TestimonialSection />
-                <CategorySection />
-                <CareerPathSection />
-                <BlogSection />
+                {/* <CategorySection /> */}
+                {/* <CareerPathSection /> */}
+                {/* <BlogSection /> */}
                 <UniversitySection />
-                <ConsultationSection />
+                {/* <ConsultationSection /> */}
                 <FaqSection />
-                <CtaSection />
+                {/* <CtaSection /> */}
               </>
             } />
             <Route path="/career-counselling" element={<CareerCounselling />} />
