@@ -278,31 +278,13 @@ const PricingSection: React.FC = () => {
             />
           </AnimatedSection>
 
-          <AnimatedSection animation="slideUp" delay={0.6}>
-            <PricingPlan
-              title="Silver Package"
-              price="4,999"
-              description="Mummy-papa bhi khush, aur admission bhi confirm!"
-              icon={Star}
-              isPopular
-              onSelectPlan={handleSelectPlan}
-              features={[
-                "Detailed college options - Central + State government colleges",
-                "Option for personal college visit with team - Get first-hand experience",
-                "One-on-one parent + student counselling - Personalized guidance session",
-                "Process explanation + documentation support - Step-by-step assistance",
-                "End-to-end guidance till final allotment - Complete support journey",
-                "For serious families who want personal touch",
-              ]}
-            />
-          </AnimatedSection>
-
           <AnimatedSection animation="slideUp" delay={0.8}>
             <PricingPlan
               title="Golden Package"
               price="9,999"
               description="100% Government Seat ya Paisa Wapas – Bas Itna Hi Simple Hai!"
               icon={Crown}
+              isPopular
               onSelectPlan={handleSelectPlan}
               features={[
                 "Guaranteed Govt. College Allotment - CUET, IISER, etc.",
@@ -312,6 +294,24 @@ const PricingSection: React.FC = () => {
                 "In-depth discussion with parents - Family consultation sessions",
                 "Full support until you hold that allotment letter in hand",
                 "For toppers, dreamers, and serious candidates who want nothing but the best!",
+              ]}
+            />
+          </AnimatedSection>
+
+          <AnimatedSection animation="slideUp" delay={0.6}>
+            <PricingPlan
+              title="Silver Package"
+              price="4,999"
+              description="Mummy-papa bhi khush, aur admission bhi confirm!"
+              icon={Star}
+              onSelectPlan={handleSelectPlan}
+              features={[
+                "Detailed college options - Central + State government colleges",
+                "Option for personal college visit with team - Get first-hand experience",
+                "One-on-one parent + student counselling - Personalized guidance session",
+                "Process explanation + documentation support - Step-by-step assistance",
+                "End-to-end guidance till final allotment - Complete support journey",
+                "For serious families who want personal touch",
               ]}
             />
           </AnimatedSection>
