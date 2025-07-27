@@ -99,7 +99,7 @@ const Footer: React.FC = () => {
                 </div>
                 <div className="flex items-center text-gray-400 hover:text-accent-500 transition-colors">
                   <Phone size={16} className="mr-3" />
-                  <span className="text-sm">+91 8209441638</span>
+                  <span className="text-sm">+91 7738736346</span>
                 </div>
                 <div className="flex items-center text-gray-400 hover:text-accent-500 transition-colors">
                   <MapPin size={16} className="mr-3 min-w-4" />
