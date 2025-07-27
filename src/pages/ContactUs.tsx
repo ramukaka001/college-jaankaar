@@ -66,7 +66,7 @@ const ContactUs: React.FC = () => {
       title: 'Call Us',
       description: 'Speak directly with our counselors',
       details: [
-        '+91  8209441638',
+        '+91  7738736346',
         // '+91 87654 32109',
         'Mon-Sat: 9:00 AM - 8:00 PM'
       ],
