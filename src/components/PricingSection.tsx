@@ -118,7 +118,7 @@ const PricingPlan: React.FC<PricingPlanProps> = ({
 const PRICING_OPTIONS = {
   "1999": "starter",
   "4999": "silver",
-  "9999": "gold",
+  "14999": "gold",
 };
 
 const PricingSection: React.FC = () => {
@@ -264,7 +264,7 @@ const PricingSection: React.FC = () => {
           <AnimatedSection animation="slideUp" delay={0.4}>
             <PricingPlan
               title="Starter Package"
-              price="1999"
+              price="1,999"
               description="Guidance chahiye, toh basic se shuru karo!"
               icon={Zap}
               features={[
@@ -281,7 +281,7 @@ const PricingSection: React.FC = () => {
           <AnimatedSection animation="slideUp" delay={0.8}>
             <PricingPlan
               title="Golden Package"
-              price="9,999"
+              price="14,999"
               description="100% Government Seat ya Paisa Wapas – Bas Itna Hi Simple Hai!"
               icon={Crown}
               isPopular
